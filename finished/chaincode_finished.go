@@ -93,16 +93,20 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
-	if function == "init" {
-		return t.Init(stub, "init", args)
-	} else if function == "delete" {
-		return t.Delete(stub, args)
-	} else if function == "write" {
-		return t.write(stub, args)
-	}
-	fmt.Println("invoke did not find func: " + function)
+    if function == "init" {               //initialize the chaincode state, used as reset
+        return t.Init(stub, "init", args)
+    } else if function == "delete" {      //deletes an entity from its state
+        return t.Delete(stub, args)
+    } else if function == "write" {       //writes a value to the chaincode state
+        return t.write(stub, args)
+    } else if function == "init_marble" { //create a new marble
+        return t.init_marble(stub, args)
+    } else if function == "set_user" {    //change owner of a marble
+        return t.set_user(stub, args)
+    }
+    fmt.Println("invoke did not find func: " + function) //error
 
-	return nil, errors.New("Received unknown function invocation")
+    return nil, errors.New("Received unknown function invocation")
 }
 
 // ============================================================================================================================
